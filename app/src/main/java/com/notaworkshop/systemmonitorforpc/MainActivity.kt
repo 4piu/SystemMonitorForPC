@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
             else -> {
                 Snackbar.make(
                     findViewById(android.R.id.content),
-                    "Press the back again to exit the app",
+                    getString(R.string.exit_confirm),
                     Snackbar.LENGTH_SHORT
                 ).show()
                 pressAgainToExit = currentTimeMillis()
