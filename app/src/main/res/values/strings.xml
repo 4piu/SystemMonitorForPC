@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">System Monitor For PC</string>
+    <string name="action_fullscreen">Fullscreen</string>
 </resources>
