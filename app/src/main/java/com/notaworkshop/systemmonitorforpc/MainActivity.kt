@@ -3,10 +3,10 @@ package com.notaworkshop.systemmonitorforpc
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import com.google.android.material.snackbar.Snackbar
 import java.lang.System.currentTimeMillis
 
 class MainActivity : AppCompatActivity() {
@@ -23,7 +23,11 @@ class MainActivity : AppCompatActivity() {
             super.onBackPressed()
             return
         } else {
-            Toast.makeText(this, "Press back again to exit the app", Toast.LENGTH_SHORT).show()
+            Snackbar.make(
+                findViewById(android.R.id.content),
+                "Press the back again to exit the app",
+                Snackbar.LENGTH_SHORT
+            ).show()
             pressAgainToExit = currentTimeMillis()
         }
     }
