@@ -4,6 +4,11 @@
     <item
         android:id="@+id/action_fullscreen"
         android:icon="@drawable/ic_baseline_fullscreen_24"
-        android:title="@string/action_fullscreen"
+        android:title="@string/fullscreen"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@drawable/ic_baseline_settings_24"
+        android:title="@string/settings"
+        app:showAsAction="ifRoom"/>
 </menu>

@@ -1,5 +1,13 @@
 <resources>
     <string name="app_name">System Monitor For PC</string>
-    <string name="action_fullscreen">Fullscreen</string>
+    <string name="fullscreen">Fullscreen</string>
     <string name="exit_confirm">Press the back again to exit the app</string>
+    <string name="host">Host</string>
+    <string name="port">Port</string>
+    <string name="basic_auth">Basic auth</string>
+    <string name="pref_basic_auth_sum_on">Server requires authorization</string>
+    <string name="pref_basic_auth_sum_off">Server does not require authorization</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="settings">Settings</string>
 </resources>

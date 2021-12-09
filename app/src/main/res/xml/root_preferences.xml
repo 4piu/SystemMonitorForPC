@@ -1,0 +1,36 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="Server">
+        <EditTextPreference
+            app:defaultValue="127.0.0.1"
+            app:key="preference_host"
+            app:singleLine="true"
+            app:title="@string/host"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:defaultValue="8080"
+            app:key="preference_port"
+            app:singleLine="true"
+            app:title="@string/port"
+            app:useSimpleSummaryProvider="true" />
+        <SwitchPreference
+            app:defaultValue="false"
+            app:key="preference_basic_auth"
+            app:summaryOff="@string/pref_basic_auth_sum_off"
+            app:summaryOn="@string/pref_basic_auth_sum_on"
+            app:title="@string/basic_auth" />
+        <EditTextPreference
+            app:dependency="preference_basic_auth"
+            app:key="preference_auth_username"
+            app:singleLine="true"
+            app:title="@string/username"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:dependency="preference_basic_auth"
+            app:key="preference_auth_password"
+            app:singleLine="true"
+            app:summary="******"
+            app:title="@string/password" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

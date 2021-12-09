@@ -1,5 +1,6 @@
 package com.notaworkshop.systemmonitorforpc
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.*
@@ -72,6 +73,10 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_fullscreen -> {
                 fullScreen()
+                true
+            }
+            R.id.action_settings -> {
+                startActivity(Intent(this, SettingsActivity::class.java))
                 true
             }
             else -> super.onOptionsItemSelected(item)
