@@ -10,7 +10,8 @@ import com.google.android.material.snackbar.Snackbar
 import java.lang.System.currentTimeMillis
 
 class MainActivity : AppCompatActivity() {
-    private var pressAgainToExit = 0L;
+    private var pressAgainToExit = 0L
+    private var isFullScreen = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,16 +20,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (pressAgainToExit + 2000 > currentTimeMillis()) {
-            super.onBackPressed()
-            return
-        } else {
-            Snackbar.make(
-                findViewById(android.R.id.content),
-                "Press the back again to exit the app",
-                Snackbar.LENGTH_SHORT
-            ).show()
-            pressAgainToExit = currentTimeMillis()
+        when {
+            pressAgainToExit + 2000 > currentTimeMillis() -> {
+                super.onBackPressed()
+                return
+            }
+            isFullScreen -> {
+                quitFullScreen()
+            }
+            else -> {
+                Snackbar.make(
+                    findViewById(android.R.id.content),
+                    "Press the back again to exit the app",
+                    Snackbar.LENGTH_SHORT
+                ).show()
+                pressAgainToExit = currentTimeMillis()
+            }
         }
     }
 
@@ -48,7 +55,18 @@ class MainActivity : AppCompatActivity() {
         windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
         // hide action bar
         supportActionBar?.hide()
+        isFullScreen = true
     }
+
+    private fun quitFullScreen() {
+        val windowInsetsController =
+            ViewCompat.getWindowInsetsController(window.decorView) ?: return
+        windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
+        // show action bar
+        supportActionBar?.show()
+        isFullScreen = false
+    }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
