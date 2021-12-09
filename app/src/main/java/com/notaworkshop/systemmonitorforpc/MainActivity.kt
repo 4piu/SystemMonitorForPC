@@ -2,18 +2,30 @@ package com.notaworkshop.systemmonitorforpc
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
+import android.view.*
+import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import java.lang.System.currentTimeMillis
 
 class MainActivity : AppCompatActivity() {
+    private var pressAgainToExit = 0L;
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
+    }
+
+    override fun onBackPressed() {
+        if (pressAgainToExit + 2000 > currentTimeMillis()) {
+            super.onBackPressed()
+            return
+        } else {
+            Toast.makeText(this, "Press back again to exit the app", Toast.LENGTH_SHORT).show()
+            pressAgainToExit = currentTimeMillis()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
