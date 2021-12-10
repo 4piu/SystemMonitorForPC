@@ -1,12 +1,15 @@
 package com.notaworkshop.systemmonitorforpc
 
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.*
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.preference.Preference
+import androidx.preference.PreferenceManager
 import com.google.android.material.snackbar.Snackbar
 import java.lang.System.currentTimeMillis
 
@@ -18,6 +21,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container_view, MonitorFragment())
+            .commit()
     }
 
     override fun onBackPressed() {
