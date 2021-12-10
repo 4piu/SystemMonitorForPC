@@ -12,7 +12,9 @@ import android.widget.TextView
 import androidx.collection.CircularArray
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
+import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
+import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
@@ -20,18 +22,20 @@ import kotlinx.coroutines.*
 import org.json.JSONObject
 
 private const val POLLING_INTERVAL = 500L
+private const val REQ_TIMEOUT = 1000
 private const val MAX_HISTORY = 120
 
 class MonitorFragment : Fragment() {
     companion object {
         private val TAG = MonitorFragment::class.qualifiedName
     }
-    private var pollingJob: Job = Job()
+    private var pollingJob: Job? = null
     private var lastPolling = 0L
     private var url = ""
     private var isAuth = false
     private var username = ""
     private var password = ""
+    private var requestQueue: RequestQueue? = null
     private val history = CircularArray<JSONObject>(120)
 
     private val onPrefChange = SharedPreferences.OnSharedPreferenceChangeListener {
@@ -50,24 +54,15 @@ class MonitorFragment : Fragment() {
         username = sharedPref.getString("preference_auth_username", "")!!
         password = sharedPref.getString("preference_auth_password", "")!!
         sharedPref.registerOnSharedPreferenceChangeListener(onPrefChange)
+        requestQueue = Volley.newRequestQueue(context)  // creating request queue in loop causes memory leak
+        // start polling
+        pollingJob = pollingStats()
     }
 
     override fun onStop() {
         super.onStop()
         val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
         sharedPref.unregisterOnSharedPreferenceChangeListener(onPrefChange)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        // start polling
-        pollingJob = lifecycleScope.launch {
-            while (pollingJob.isActive) {
-                lastPolling = System.currentTimeMillis()
-                pollingStats()
-                delay(lastPolling + POLLING_INTERVAL - System.currentTimeMillis())
-            }
-        }
     }
 
     override fun onCreateView(
@@ -78,44 +73,53 @@ class MonitorFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_monitor, container, false)
     }
 
-    private suspend fun pollingStats() {
-        withContext(Dispatchers.Default) {
-            // make request
-            val queue = Volley.newRequestQueue(context)
-            val request = object : JsonObjectRequest(Request.Method.GET, url, null,
-                Response.Listener<JSONObject> {
-                    if (history.size()>= MAX_HISTORY) {
-                        history.popFirst()
+    private fun pollingStats(): Job {
+        return lifecycleScope.launch {
+            while (isActive) {
+                lastPolling = System.currentTimeMillis()
+                // make request
+                val request = object : JsonObjectRequest(Request.Method.GET, url, null,
+                    Response.Listener<JSONObject> {
+                        if (history.size()>= MAX_HISTORY) {
+                            history.popFirst()
+                        }
+                        history.addLast(it)
+                        updateStatsView()
+                    },
+                    Response.ErrorListener {
+                        // blank data
+                        if (history.size()>= MAX_HISTORY) {
+                            history.popFirst()
+                        }
+                        history.addLast(null)
+                        updateStatsView()
+                    }) {
+                    override fun getHeaders(): MutableMap<String, String> {
+                        val params = HashMap<String, String>()
+                        if (isAuth) {
+                            params["Authorization"] = "Basic " + Base64.encodeToString(
+                                "${username}:${password}".toByteArray(),
+                                Base64.DEFAULT
+                            )
+                        }
+                        return params
                     }
-                    history.addLast(it)
-                },
-                Response.ErrorListener {
-                    Log.w(TAG, "${it.message}")
-                    // blank data
-                    if (history.size()>= MAX_HISTORY) {
-                        history.popFirst()
-                    }
-                    history.addLast(null)
-                }) {
-                override fun getHeaders(): MutableMap<String, String> {
-                    val params = HashMap<String, String>()
-                    if (isAuth) {
-                        params["Authorization"] = "Basic " + Base64.encodeToString(
-                            "${username}:${password}".toByteArray(),
-                            Base64.DEFAULT
-                        )
-                    }
-                    return params
                 }
+                request.retryPolicy = DefaultRetryPolicy(
+                    REQ_TIMEOUT,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
+                requestQueue?.add(request)
+                delay(lastPolling + POLLING_INTERVAL - System.currentTimeMillis())
             }
-            queue.add(request)
-        }
-        withContext(Dispatchers.Main) {
-            updateStatsView()
         }
     }
 
     private fun updateStatsView() {
-        val text: TextView? = view?.findViewById(R.id.dummy_text)
+        var cpu_percent = history.last?.getJSONObject("cpu")?.getDouble("percent_sum")
+        if (cpu_percent == null){
+            cpu_percent = -1.0
+        }
+        Log.d(TAG, "${history.size()} CPU: ${cpu_percent}")
     }
 }
