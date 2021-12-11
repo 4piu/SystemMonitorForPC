@@ -37,6 +37,7 @@ class MonitorFragment : Fragment() {
     private var password = ""
     private var requestQueue: RequestQueue? = null
     private val history = CircularArray<JSONObject>(120)
+    private var cpuMeterFragment: CpuMeterFragment? = null
 
     private val onPrefChange = SharedPreferences.OnSharedPreferenceChangeListener {
             sharedPreferences, key ->
@@ -70,7 +71,13 @@ class MonitorFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_monitor, container, false)
+        val view = inflater.inflate(R.layout.fragment_monitor, container, false)
+        cpuMeterFragment = CpuMeterFragment()
+        childFragmentManager
+            .beginTransaction()
+            .replace(R.id.meter_2, cpuMeterFragment!!)
+            .commit()
+        return view
     }
 
     private fun pollingStats(): Job {
@@ -116,6 +123,6 @@ class MonitorFragment : Fragment() {
     }
 
     private fun updateStatsView() {
-
+        cpuMeterFragment?.updateView(history)
     }
 }
