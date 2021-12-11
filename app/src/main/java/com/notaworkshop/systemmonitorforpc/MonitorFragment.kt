@@ -48,7 +48,7 @@ class MonitorFragment : Fragment() {
         // get settings value
         val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
         val host = sharedPref.getString("preference_host", "")
-        val port = Integer.valueOf(sharedPref.getString("preference_port", "80"))
+        val port = Integer.valueOf(sharedPref.getString("preference_port", "80")!!)
         url = "http://${host}:${port}"
         isAuth = sharedPref.getBoolean("preference_basic_auth", false)
         username = sharedPref.getString("preference_auth_username", "")!!
@@ -116,10 +116,6 @@ class MonitorFragment : Fragment() {
     }
 
     private fun updateStatsView() {
-        var cpu_percent = history.last?.getJSONObject("cpu")?.getDouble("percent_sum")
-        if (cpu_percent == null){
-            cpu_percent = -1.0
-        }
-        Log.d(TAG, "${history.size()} CPU: ${cpu_percent}")
+
     }
 }
