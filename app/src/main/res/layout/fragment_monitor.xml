@@ -1,15 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/plot_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MonitorFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/dummy_text"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Blank" />
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/meter_1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#269"
+        app:layout_constraintBottom_toTopOf="@+id/chart_1"
+        app:layout_constraintHeight_percent="0.3"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/meter_2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.3" />
 
-</FrameLayout>
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/meter_2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#E3AA"
+        app:layout_constraintHeight_percent="0.3"
+        app:layout_constraintLeft_toRightOf="@+id/meter_1"
+        app:layout_constraintRight_toLeftOf="@id/meter_3"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/chart_1"
+        app:layout_constraintWidth_percent="0.3" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/meter_3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#F6D55C"
+        app:layout_constraintBottom_toTopOf="@+id/chart_1"
+        app:layout_constraintHeight_percent="0.3"
+        app:layout_constraintLeft_toRightOf="@id/meter_2"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.3" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/chart_1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#DDED553B"
+        app:layout_constraintHeight_percent="0.3"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/chart_2"
+        app:layout_constraintTop_toBottomOf="@id/meter_2"
+        app:layout_constraintBottom_toTopOf="@id/chart_3"
+        app:layout_constraintWidth_percent="0.48" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/chart_2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#CDDC39"
+        app:layout_constraintHeight_percent="0.3"
+        app:layout_constraintLeft_toRightOf="@id/chart_1"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/meter_2"
+        app:layout_constraintBottom_toTopOf="@id/chart_4"
+        app:layout_constraintWidth_percent="0.48" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/chart_3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#2196F3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHeight_percent="0.3"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/chart_4"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/chart_1"
+        app:layout_constraintWidth_percent="0.48" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/chart_4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#E91E63"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHeight_percent="0.3"
+        app:layout_constraintLeft_toRightOf="@id/chart_3"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/chart_2"
+        app:layout_constraintWidth_percent="0.48" />
+</androidx.constraintlayout.widget.ConstraintLayout>
