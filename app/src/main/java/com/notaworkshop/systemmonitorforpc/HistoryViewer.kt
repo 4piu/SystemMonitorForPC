@@ -1,8 +1,8 @@
 package com.notaworkshop.systemmonitorforpc
 
-import androidx.collection.CircularArray
 import org.json.JSONObject
+import java.util.*
 
 interface HistoryViewer {
-    fun updateView(data: CircularArray<JSONObject>)
+    fun updateView(data: LinkedList<JSONObject?>)
 }

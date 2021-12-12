@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.collection.CircularArray
 import org.json.JSONObject
+import java.util.*
 
 class CpuMeterFragment : Fragment(), HistoryViewer {
 
@@ -19,9 +20,8 @@ class CpuMeterFragment : Fragment(), HistoryViewer {
         return inflater.inflate(R.layout.fragment_cpu_meter, container, false)
     }
 
-    override fun updateView(data: CircularArray<JSONObject>) {
-        val latestData = data.last
-        val percent = latestData?.getJSONObject("cpu")?.getString("percent_sum")
+    override fun updateView(data: LinkedList<JSONObject?>) {
+        val percent = data.last?.getJSONObject("cpu")?.getString("percent_sum")
         activity?.findViewById<TextView>(R.id.cpu_meter_percent_integer)?.text = if (percent==null) "---" else percent.split(".")[0]
         activity?.findViewById<TextView>(R.id.cpu_meter_percent_fragment)?.text = if (percent==null) "-" else percent.split(".")[1]
     }

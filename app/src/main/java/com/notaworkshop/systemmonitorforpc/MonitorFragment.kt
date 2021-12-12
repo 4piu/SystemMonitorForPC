@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.collection.CircularArray
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import com.android.volley.DefaultRetryPolicy
@@ -19,6 +18,8 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import kotlinx.coroutines.*
 import org.json.JSONObject
+import java.util.*
+import kotlin.collections.HashMap
 
 
 class MonitorFragment : Fragment() {
@@ -36,7 +37,7 @@ class MonitorFragment : Fragment() {
     private var username = ""
     private var password = ""
     private var requestQueue: RequestQueue? = null
-    private val history = CircularArray<JSONObject>(120)
+    private val history = LinkedList<JSONObject?>() // replace array with linked list
 
     private val onPrefChange = SharedPreferences.OnSharedPreferenceChangeListener {
             sharedPreferences, key ->
@@ -74,6 +75,7 @@ class MonitorFragment : Fragment() {
         childFragmentManager
             .beginTransaction()
             .replace(R.id.meter_2, CpuMeterFragment())
+            .replace(R.id.chart_1, CoreUtilizationChartFragment())
             .commit()
         return view
     }
@@ -85,18 +87,18 @@ class MonitorFragment : Fragment() {
                 // make request
                 val request = object : JsonObjectRequest(Request.Method.GET, url, null,
                     Response.Listener<JSONObject> {
-                        if (history.size()>= MAX_HISTORY) {
-                            history.popFirst()
+                        if (history.size >= MAX_HISTORY) {
+                            history.removeFirst()
                         }
                         history.addLast(it)
                         updateStatsView()
                     },
                     Response.ErrorListener {
                         // blank data
-                        if (history.size()>= MAX_HISTORY) {
-                            history.popFirst()
+                        if (history.size >= MAX_HISTORY) {
+                            history.removeFirst()
                         }
-                        history.addLast(null)
+                        history.add(null)
                         updateStatsView()
                     }) {
                     override fun getHeaders(): MutableMap<String, String> {
