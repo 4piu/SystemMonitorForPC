@@ -36,7 +36,6 @@ class MonitorFragment : Fragment() {
     private var password = ""
     private var requestQueue: RequestQueue? = null
     private val history = CircularArray<JSONObject>(120)
-    private var cpuMeterFragment: CpuMeterFragment? = null
 
     private val onPrefChange = SharedPreferences.OnSharedPreferenceChangeListener {
             sharedPreferences, key ->
@@ -71,10 +70,9 @@ class MonitorFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_monitor, container, false)
-        cpuMeterFragment = CpuMeterFragment()
         childFragmentManager
             .beginTransaction()
-            .replace(R.id.meter_2, cpuMeterFragment!!)
+            .replace(R.id.meter_2, CpuMeterFragment())
             .commit()
         return view
     }
@@ -122,6 +120,10 @@ class MonitorFragment : Fragment() {
     }
 
     private fun updateStatsView() {
-        cpuMeterFragment?.updateView(history)
+        // uses one global object for history storage
+        // reduce duplicate code by using interface
+        for (frag: Fragment in childFragmentManager.fragments) {
+            if (frag is HistoryViewer) frag.updateView(history)
+        }
     }
 }
