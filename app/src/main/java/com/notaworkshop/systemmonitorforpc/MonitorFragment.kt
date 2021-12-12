@@ -25,11 +25,13 @@ import kotlin.collections.HashMap
 class MonitorFragment : Fragment() {
     companion object {
         private val TAG = MonitorFragment::class.qualifiedName
+
         // TODO convert the constants to preferences
         private const val POLLING_INTERVAL = 500L
         private const val REQ_TIMEOUT = 1000
         private const val MAX_HISTORY = 120
     }
+
     private var pollingJob: Job? = null
     private var lastPolling = 0L
     private var url = ""
@@ -39,10 +41,10 @@ class MonitorFragment : Fragment() {
     private var requestQueue: RequestQueue? = null
     private val history = LinkedList<JSONObject?>() // replace array with linked list
 
-    private val onPrefChange = SharedPreferences.OnSharedPreferenceChangeListener {
-            sharedPreferences, key ->
-        Log.w(TAG, "CHANGED") // TODO not working
-    }
+    private val onPrefChange =
+        SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
+            Log.w(TAG, "CHANGED") // TODO not working
+        }
 
     override fun onStart() {
         super.onStart()
@@ -55,7 +57,8 @@ class MonitorFragment : Fragment() {
         username = sharedPref.getString("preference_auth_username", "")!!
         password = sharedPref.getString("preference_auth_password", "")!!
         sharedPref.registerOnSharedPreferenceChangeListener(onPrefChange)
-        requestQueue = Volley.newRequestQueue(context)  // creating request queue in loop causes memory leak
+        requestQueue =
+            Volley.newRequestQueue(context)  // creating request queue in loop causes memory leak
         // start polling
         pollingJob = pollingStats()
     }
@@ -86,21 +89,8 @@ class MonitorFragment : Fragment() {
                 lastPolling = System.currentTimeMillis()
                 // make request
                 val request = object : JsonObjectRequest(Request.Method.GET, url, null,
-                    Response.Listener<JSONObject> {
-                        if (history.size >= MAX_HISTORY) {
-                            history.removeFirst()
-                        }
-                        history.addLast(it)
-                        updateStatsView()
-                    },
-                    Response.ErrorListener {
-                        // blank data
-                        if (history.size >= MAX_HISTORY) {
-                            history.removeFirst()
-                        }
-                        history.add(null)
-                        updateStatsView()
-                    }) {
+                    Response.Listener { updateStats(it) },
+                    Response.ErrorListener { updateStats(null) }) {
                     override fun getHeaders(): MutableMap<String, String> {
                         val params = HashMap<String, String>()
                         if (isAuth) {
@@ -115,15 +105,20 @@ class MonitorFragment : Fragment() {
                 request.retryPolicy = DefaultRetryPolicy(
                     REQ_TIMEOUT,
                     DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+                )
                 requestQueue?.add(request)
                 delay(lastPolling + POLLING_INTERVAL - System.currentTimeMillis())
             }
         }
     }
 
-    private fun updateStatsView() {
+    private fun updateStats(data: JSONObject?) {
         // uses one global object for history storage
+        if (history.size >= MAX_HISTORY) {
+            history.removeFirst()
+        }
+        history.addLast(data)
         // reduce duplicate code by using interface
         for (frag: Fragment in childFragmentManager.fragments) {
             if (frag is HistoryViewer) frag.updateView(history)
