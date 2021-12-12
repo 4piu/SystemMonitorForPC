@@ -20,13 +20,14 @@ import com.android.volley.toolbox.Volley
 import kotlinx.coroutines.*
 import org.json.JSONObject
 
-private const val POLLING_INTERVAL = 500L
-private const val REQ_TIMEOUT = 1000
-private const val MAX_HISTORY = 120
 
 class MonitorFragment : Fragment() {
     companion object {
         private val TAG = MonitorFragment::class.qualifiedName
+        // TODO convert the constants to preferences
+        private const val POLLING_INTERVAL = 500L
+        private const val REQ_TIMEOUT = 1000
+        private const val MAX_HISTORY = 120
     }
     private var pollingJob: Job? = null
     private var lastPolling = 0L
