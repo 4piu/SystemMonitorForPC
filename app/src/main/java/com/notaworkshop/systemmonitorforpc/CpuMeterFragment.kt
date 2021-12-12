@@ -20,9 +20,9 @@ class CpuMeterFragment : Fragment() {
     }
 
     fun updateView(data: CircularArray<JSONObject>) {
-        val text = activity?.findViewById<TextView>(R.id.cpu_meter_percent)
         val latestData = data.last
-        val percent = latestData?.getJSONObject("cpu")?.getDouble("percent_sum")
-        text?.text = if (percent==null) "--%" else "${percent}%"
+        val percent = latestData?.getJSONObject("cpu")?.getString("percent_sum")
+        activity?.findViewById<TextView>(R.id.cpu_meter_percent_integer)?.text = if (percent==null) "---" else percent.split(".")[0]
+        activity?.findViewById<TextView>(R.id.cpu_meter_percent_fragment)?.text = if (percent==null) "-" else percent.split(".")[1]
     }
 }
