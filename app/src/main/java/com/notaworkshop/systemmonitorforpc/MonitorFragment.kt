@@ -43,11 +43,17 @@ class MonitorFragment : Fragment() {
 
     private val onPrefChange =
         SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
-            Log.w(TAG, "CHANGED") // TODO not working
+            Log.w(TAG, "CHANGED") // TODO
         }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requestQueue =
+            Volley.newRequestQueue(context)  // creating request queue in loop causes memory leak
+        // init history
+        while (history.size < HISTORY_SIZE) {
+            history.add(null)
+        }
         // get settings value
         val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
         val host = sharedPref.getString("preference_host", "")
@@ -57,18 +63,12 @@ class MonitorFragment : Fragment() {
         username = sharedPref.getString("preference_auth_username", "")!!
         password = sharedPref.getString("preference_auth_password", "")!!
         sharedPref.registerOnSharedPreferenceChangeListener(onPrefChange)
-        requestQueue =
-            Volley.newRequestQueue(context)  // creating request queue in loop causes memory leak
-        // init history
-        while (history.size < HISTORY_SIZE) {
-            history.add(null)
-        }
         // start polling
         pollingJob = pollingStats()
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onDestroy() {
+        super.onDestroy()
         val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
         sharedPref.unregisterOnSharedPreferenceChangeListener(onPrefChange)
     }
@@ -119,6 +119,7 @@ class MonitorFragment : Fragment() {
 
     private fun updateStats(data: JSONObject?) {
         // uses one global object for history storage
+        Log.d(TAG, "updateStats")
         history.removeFirst()
         history.add(data)
         // reduce duplicate code by using interface
