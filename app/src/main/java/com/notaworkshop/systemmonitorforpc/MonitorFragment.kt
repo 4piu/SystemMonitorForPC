@@ -29,7 +29,7 @@ class MonitorFragment : Fragment() {
         // TODO convert the constants to preferences
         private const val POLLING_INTERVAL = 500L
         private const val REQ_TIMEOUT = 1000
-        private const val MAX_HISTORY = 120
+        private const val HISTORY_SIZE = 120
     }
 
     private var pollingJob: Job? = null
@@ -121,7 +121,7 @@ class MonitorFragment : Fragment() {
         history.addLast(data)
         // reduce duplicate code by using interface
         for (frag: Fragment in childFragmentManager.fragments) {
-            if (frag is HistoryViewer) frag.updateView(history)
+            if (frag is HistoryViewer) frag.updateView(history, HISTORY_SIZE)
         }
     }
 }

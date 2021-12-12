@@ -20,7 +20,7 @@ class CpuMeterFragment : Fragment(), HistoryViewer {
         return inflater.inflate(R.layout.fragment_cpu_meter, container, false)
     }
 
-    override fun updateView(data: LinkedList<JSONObject?>) {
+    override fun updateView(data: LinkedList<JSONObject?>, historySize: Int) {
         val percent = data.last?.getJSONObject("cpu")?.getString("percent_sum")
         activity?.findViewById<TextView>(R.id.cpu_meter_percent_integer)?.text = if (percent==null) "---" else percent.split(".")[0]
         activity?.findViewById<TextView>(R.id.cpu_meter_percent_fragment)?.text = if (percent==null) "-" else percent.split(".")[1]

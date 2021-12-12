@@ -4,5 +4,5 @@ import org.json.JSONObject
 import java.util.*
 
 interface HistoryViewer {
-    fun updateView(data: LinkedList<JSONObject?>)
+    fun updateView(data: LinkedList<JSONObject?>, historySize: Int)
 }
