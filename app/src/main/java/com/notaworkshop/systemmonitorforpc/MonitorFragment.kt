@@ -43,7 +43,7 @@ class MonitorFragment : Fragment() {
 
     private val onPrefChange =
         SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
-            Log.w(TAG, "CHANGED") // TODO
+            loadPreference(sharedPreferences)
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,14 +55,9 @@ class MonitorFragment : Fragment() {
             history.add(null)
         }
         // get settings value
-        val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
-        val host = sharedPref.getString("preference_host", "")
-        val port = Integer.valueOf(sharedPref.getString("preference_port", "80")!!)
-        url = "http://${host}:${port}"
-        isAuth = sharedPref.getBoolean("preference_basic_auth", false)
-        username = sharedPref.getString("preference_auth_username", "")!!
-        password = sharedPref.getString("preference_auth_password", "")!!
-        sharedPref.registerOnSharedPreferenceChangeListener(onPrefChange)
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        loadPreference(sharedPreferences)
+        sharedPreferences.registerOnSharedPreferenceChangeListener(onPrefChange)
         // start polling
         pollingJob = pollingStats()
     }
@@ -85,6 +80,15 @@ class MonitorFragment : Fragment() {
             .replace(R.id.chart_1, CoreUtilizationChartFragment())
             .commit()
         return view
+    }
+
+    private fun loadPreference(sharedPreferences: SharedPreferences) {
+        val host = sharedPreferences.getString("preference_host", "")
+        val port = Integer.valueOf(sharedPreferences.getString("preference_port", "80")!!)
+        url = "http://${host}:${port}"
+        isAuth = sharedPreferences.getBoolean("preference_basic_auth", false)
+        username = sharedPreferences.getString("preference_auth_username", "")!!
+        password = sharedPreferences.getString("preference_auth_password", "")!!
     }
 
     private fun pollingStats(): Job {
