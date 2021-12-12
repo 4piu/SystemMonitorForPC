@@ -39,7 +39,7 @@ class MonitorFragment : Fragment() {
     private var username = ""
     private var password = ""
     private var requestQueue: RequestQueue? = null
-    private val history = LinkedList<JSONObject?>() // replace array with linked list
+    private val history = LinkedList<JSONObject?>()// replace array with linked list
 
     private val onPrefChange =
         SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
@@ -59,6 +59,10 @@ class MonitorFragment : Fragment() {
         sharedPref.registerOnSharedPreferenceChangeListener(onPrefChange)
         requestQueue =
             Volley.newRequestQueue(context)  // creating request queue in loop causes memory leak
+        // init history
+        while (history.size < HISTORY_SIZE) {
+            history.add(null)
+        }
         // start polling
         pollingJob = pollingStats()
     }
@@ -115,10 +119,8 @@ class MonitorFragment : Fragment() {
 
     private fun updateStats(data: JSONObject?) {
         // uses one global object for history storage
-        if (history.size >= MAX_HISTORY) {
-            history.removeFirst()
-        }
-        history.addLast(data)
+        history.removeFirst()
+        history.add(data)
         // reduce duplicate code by using interface
         for (frag: Fragment in childFragmentManager.fragments) {
             if (frag is HistoryViewer) frag.updateView(history, HISTORY_SIZE)
