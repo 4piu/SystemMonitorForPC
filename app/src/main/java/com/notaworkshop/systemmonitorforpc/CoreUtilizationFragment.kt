@@ -19,7 +19,7 @@ import org.json.JSONObject
 import java.util.*
 import kotlin.collections.ArrayList
 
-class CoreUtilizationChartFragment : Fragment(), HistoryViewer {
+class CoreUtilizationFragment : Fragment(), HistoryViewer {
     companion object {
         private val TAG = MonitorFragment::class.qualifiedName
     }
@@ -50,7 +50,7 @@ class CoreUtilizationChartFragment : Fragment(), HistoryViewer {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_core_utilization_chart, container, false)
+        return inflater.inflate(R.layout.fragment_core_utilization, container, false)
     }
 
     @ColorInt

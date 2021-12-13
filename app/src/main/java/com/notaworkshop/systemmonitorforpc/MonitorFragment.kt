@@ -77,7 +77,7 @@ class MonitorFragment : Fragment() {
         childFragmentManager
             .beginTransaction()
             .replace(R.id.meter_2, CpuMeterFragment())
-            .replace(R.id.chart_1, CoreUtilizationChartFragment())
+            .replace(R.id.chart_1, CoreUtilizationFragment())
             .commit()
         return view
     }
