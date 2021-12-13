@@ -73,11 +73,11 @@ class NetworkActivityFragment : Fragment(), HistoryViewer {
         val lineDatasetList = ArrayList<ILineDataSet>()
         val datasetRx = LineDataSet(netRxEntryList, "Rx").apply {
             this.setDrawCircles(false)
-            this.setColor(ContextCompat.getColor(requireContext(), R.color.m_deep_orange), 200)
+            this.color = ContextCompat.getColor(requireContext(), R.color.m_deep_orange)
         }
         val datasetTx = LineDataSet(netTxEntryList, "Tx").apply {
             this.setDrawCircles(false)
-            this.setColor(ContextCompat.getColor(requireContext(), R.color.m_green), 200)
+            this.color = ContextCompat.getColor(requireContext(), R.color.m_green)
         }
         lineDatasetList.add(datasetRx)
         lineDatasetList.add(datasetTx)
