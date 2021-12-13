@@ -22,7 +22,7 @@ import kotlin.collections.ArrayList
 
 class NetworkActivityFragment : Fragment(), HistoryViewer {
     companion object {
-        private val TAG = MonitorFragment::class.qualifiedName
+        private val TAG = NetworkActivityFragment::class.qualifiedName
     }
 
     private var chart: LineChart? = null

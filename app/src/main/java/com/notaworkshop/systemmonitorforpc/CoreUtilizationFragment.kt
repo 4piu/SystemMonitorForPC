@@ -22,7 +22,7 @@ import kotlin.collections.ArrayList
 
 class CoreUtilizationFragment : Fragment(), HistoryViewer {
     companion object {
-        private val TAG = MonitorFragment::class.qualifiedName
+        private val TAG = CoreUtilizationFragment::class.qualifiedName
     }
     private var chart: LineChart? = null
     private val colorPalette = arrayOf<Int>(

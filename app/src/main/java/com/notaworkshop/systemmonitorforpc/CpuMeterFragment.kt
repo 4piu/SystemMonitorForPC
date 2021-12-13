@@ -17,7 +17,7 @@ import java.util.*
 
 class CpuMeterFragment : Fragment(), HistoryViewer {
     companion object {
-        private val TAG = MonitorFragment::class.qualifiedName
+        private val TAG = CpuMeterFragment::class.qualifiedName
     }
     private var chart: PieChart? = null
 

@@ -21,7 +21,7 @@ import kotlin.collections.ArrayList
 
 class AverageLoadFragment : Fragment(), HistoryViewer {
     companion object {
-        private val TAG = MonitorFragment::class.qualifiedName
+        private val TAG = AverageLoadFragment::class.qualifiedName
     }
 
     private var chart: LineChart? = null

@@ -21,7 +21,7 @@ import kotlin.collections.ArrayList
 
 class DiskIoFragment : Fragment(), HistoryViewer {
     companion object {
-        private val TAG = MonitorFragment::class.qualifiedName
+        private val TAG = DiskIoFragment::class.qualifiedName
     }
 
     private var chart: LineChart? = null
