@@ -79,6 +79,7 @@ class MonitorFragment : Fragment() {
             .replace(R.id.meter_2, CpuMeterFragment())
             .replace(R.id.chart_1, CoreUtilizationFragment())
             .replace(R.id.chart_2, NetworkActivityFragment())
+            .replace(R.id.chart_3, DiskIoFragment())
             .commit()
         return view
     }
