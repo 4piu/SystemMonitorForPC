@@ -125,10 +125,10 @@ class MonitorFragment : Fragment() {
 
     private fun updateStats(data: JSONObject?) {
         // uses one global object for history storage
-        Log.d(TAG, "updateStats")
         history.removeFirst()
         history.add(data)
         // reduce duplicate code by using interface
+        if (!isAdded) return
         for (frag: Fragment in childFragmentManager.fragments) {
             if (frag is HistoryViewer) frag.updateView(history, HISTORY_SIZE)
         }
