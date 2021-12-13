@@ -83,4 +83,17 @@
         app:layout_constraintStart_toEndOf="@id/cpu_meter_percent_fragment"
         tools:ignore="HardcodedText" />
 
+    <TextView
+        android:id="@+id/cpu_meter_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/digital_7_mono"
+        android:text="CPU"
+        android:textSize="32sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="HardcodedText" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
