@@ -80,6 +80,7 @@ class MonitorFragment : Fragment() {
             .replace(R.id.chart_1, CoreUtilizationFragment())
             .replace(R.id.chart_2, NetworkActivityFragment())
             .replace(R.id.chart_3, DiskIoFragment())
+            .replace(R.id.chart_4, AverageLoadFragment())
             .commit()
         return view
     }
