@@ -76,6 +76,7 @@ class MonitorFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_monitor, container, false)
         childFragmentManager
             .beginTransaction()
+            .replace(R.id.meter_1, RamMeterFragment())
             .replace(R.id.meter_2, CpuMeterFragment())
             .replace(R.id.chart_1, CoreUtilizationFragment())
             .replace(R.id.chart_2, NetworkActivityFragment())
