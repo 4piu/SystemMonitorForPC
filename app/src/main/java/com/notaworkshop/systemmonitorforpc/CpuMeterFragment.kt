@@ -7,18 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.collection.CircularArray
 import androidx.core.content.ContextCompat
-import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.charts.PieChart
-import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
-import com.github.mikephil.charting.utils.ColorTemplate
 import org.json.JSONObject
 import java.util.*
-import kotlin.collections.ArrayList
 
 class CpuMeterFragment : Fragment(), HistoryViewer {
     companion object {
@@ -60,11 +55,10 @@ class CpuMeterFragment : Fragment(), HistoryViewer {
         val dataset = PieDataSet(dataEntryList, "").apply {
             this.setColors(
                 ContextCompat.getColor(requireContext(), R.color.teal_200),
-                ContextCompat.getColor(requireContext(),R.color.transparent_bk))
+                ContextCompat.getColor(requireContext(),R.color.transparent_dim))
             this.setDrawValues(false)
         }
-        val data = PieData(dataset)
-        chart?.data = data
+        chart?.data = PieData(dataset)
         chart?.invalidate()
     }
 }

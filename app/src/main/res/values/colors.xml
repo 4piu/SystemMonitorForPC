@@ -25,5 +25,6 @@
     <color name="m_brown">#795548</color>
     <color name="m_grey">#9E9E9E</color>
     <color name="m_blue_grey">#607D8B</color>
-    <color name="transparent_bk">#26808080</color>
+    <color name="transparent_dim">#40808080</color>
+    <color name="transparent_dimmer">#26808080</color>
 </resources>
