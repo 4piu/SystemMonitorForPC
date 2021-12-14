@@ -27,13 +27,13 @@ class MonitorFragment : Fragment() {
         private val TAG = MonitorFragment::class.qualifiedName
 
         // TODO convert the constants to preferences
-        private const val POLLING_INTERVAL = 500L
         private const val REQ_TIMEOUT = 1000
         private const val HISTORY_SIZE = 120
     }
 
     private var pollingJob: Job? = null
     private var lastPolling = 0L
+    private var pollingInterval = 1000
     private var url = ""
     private var isAuth = false
     private var username = ""
@@ -94,6 +94,7 @@ class MonitorFragment : Fragment() {
         isAuth = sharedPreferences.getBoolean("preference_basic_auth", false)
         username = sharedPreferences.getString("preference_auth_username", "")!!
         password = sharedPreferences.getString("preference_auth_password", "")!!
+        pollingInterval = (sharedPreferences.getString("preference_polling_interval", "1.0")!!.toFloat() * 1000).toInt()
     }
 
     private fun pollingStats(): Job {
@@ -121,7 +122,7 @@ class MonitorFragment : Fragment() {
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
                 )
                 requestQueue?.add(request)
-                delay(lastPolling + POLLING_INTERVAL - System.currentTimeMillis())
+                delay(lastPolling + pollingInterval - System.currentTimeMillis())
             }
         }
     }
