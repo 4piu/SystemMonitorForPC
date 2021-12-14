@@ -14,10 +14,12 @@
         android:theme="@style/Theme.SystemMonitorForPC">
         <activity
             android:name=".SettingsActivity"
+            android:screenOrientation="locked"
             android:exported="false"
             android:launchMode="singleInstance"/>
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="locked"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
