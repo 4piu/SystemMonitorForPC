@@ -28,12 +28,12 @@ class MonitorFragment : Fragment() {
 
         // TODO convert the constants to preferences
         private const val REQ_TIMEOUT = 1000
-        private const val HISTORY_SIZE = 120
     }
 
     private var pollingJob: Job? = null
     private var lastPolling = 0L
     private var pollingInterval = 1000
+    private var historySize = 120
     private var url = ""
     private var isAuth = false
     private var username = ""
@@ -44,20 +44,24 @@ class MonitorFragment : Fragment() {
     private val onPrefChange =
         SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
             loadPreference(sharedPreferences)
+            when (key) {
+                "preference_history_size" -> {
+                    history.clear()
+                    while (history.size < historySize) history.add(null)
+                }
+            }
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestQueue =
             Volley.newRequestQueue(context)  // creating request queue in loop causes memory leak
-        // init history
-        while (history.size < HISTORY_SIZE) {
-            history.add(null)
-        }
         // get settings value
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         loadPreference(sharedPreferences)
         sharedPreferences.registerOnSharedPreferenceChangeListener(onPrefChange)
+        // init history
+        while (history.size < historySize) history.add(null)
         // start polling
         pollingJob = pollingStats()
     }
@@ -94,7 +98,9 @@ class MonitorFragment : Fragment() {
         isAuth = sharedPreferences.getBoolean("preference_basic_auth", false)
         username = sharedPreferences.getString("preference_auth_username", "")!!
         password = sharedPreferences.getString("preference_auth_password", "")!!
-        pollingInterval = (sharedPreferences.getString("preference_polling_interval", "1.0")!!.toFloat() * 1000).toInt()
+        pollingInterval = (sharedPreferences.getString("preference_polling_interval", "1.0")!!
+            .toFloat() * 1000).toInt()
+        historySize = sharedPreferences.getString("preference_history_size", "120")!!.toInt()
     }
 
     private fun pollingStats(): Job {
@@ -134,7 +140,7 @@ class MonitorFragment : Fragment() {
         // reduce duplicate code by using interface
         if (!isAdded) return
         for (frag: Fragment in childFragmentManager.fragments) {
-            if (frag is HistoryViewer) frag.updateView(history, HISTORY_SIZE)
+            if (frag is HistoryViewer) frag.updateView(history, historySize)
         }
     }
 }

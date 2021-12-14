@@ -42,6 +42,13 @@
             android:key="preference_polling_interval"
             android:title="@string/refresh_rate"
             app:useSimpleSummaryProvider="true"/>
+        <ListPreference
+            android:defaultValue="120"
+            android:entries="@array/history_size"
+            android:entryValues="@array/history_size"
+            android:key="preference_history_size"
+            android:title="Records to keep"
+            app:useSimpleSummaryProvider="true"/>
     </PreferenceCategory>
 
 </PreferenceScreen>
