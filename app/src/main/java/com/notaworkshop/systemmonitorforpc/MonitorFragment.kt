@@ -78,6 +78,7 @@ class MonitorFragment : Fragment() {
             .beginTransaction()
             .replace(R.id.meter_1, RamMeterFragment())
             .replace(R.id.meter_2, CpuMeterFragment())
+            .replace(R.id.meter_3, TemperatureMeterFragment())
             .replace(R.id.chart_1, CoreUtilizationFragment())
             .replace(R.id.chart_2, NetworkActivityFragment())
             .replace(R.id.chart_3, DiskIoFragment())
