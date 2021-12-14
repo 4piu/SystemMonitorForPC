@@ -48,7 +48,7 @@ class TemperatureMeterFragment : Fragment(), HistoryViewer {
     override fun updateView(data: LinkedList<JSONObject?>, historySize: Int) {
         val sensorObject = data.last?.getJSONObject("sensor")
         val sensorKeys = sensorObject?.keys()
-        val sensorValArray = if (sensorKeys!!.hasNext()) sensorObject.getJSONArray(sensorKeys.next()) else null
+        val sensorValArray = if (sensorKeys != null && sensorKeys.hasNext()) sensorObject.getJSONArray(sensorKeys.next()) else null
         val temperature = if (sensorValArray != null) Array(sensorValArray.getJSONArray(0).length()) { sensorValArray.getJSONArray(0).getString(it) }[1] else null
         // textview
         activity?.findViewById<TextView>(R.id.temperature_meter_percent_integer)?.text = if (temperature==null) "--" else temperature.split(".")[0]
