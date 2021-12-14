@@ -52,6 +52,7 @@ class NetworkActivityFragment : Fragment(), HistoryViewer {
         chart?.xAxis?.isEnabled = false
         chart?.axisLeft?.isEnabled = false
         chart?.setTouchEnabled(false)
+        chart?.axisRight?.valueFormatter = BytesValueFormatter()
     }
 
     override fun updateView(data: LinkedList<JSONObject?>, historySize: Int) {
