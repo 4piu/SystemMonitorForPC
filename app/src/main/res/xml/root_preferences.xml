@@ -30,7 +30,7 @@
             app:dependency="preference_basic_auth"
             app:key="preference_auth_password"
             app:singleLine="true"
-            app:summary="******"
+            app:summary="••••••"
             app:title="@string/password" />
     </PreferenceCategory>
     <PreferenceCategory android:title="Display">
