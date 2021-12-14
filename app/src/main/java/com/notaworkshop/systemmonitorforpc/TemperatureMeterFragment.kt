@@ -33,7 +33,6 @@ class TemperatureMeterFragment : Fragment(), HistoryViewer {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         chart = activity?.findViewById(R.id.temperature_percent_chart)
-//        chart?.setUsePercentValues(true)
         chart?.setDrawEntryLabels(false)
         chart?.isDrawHoleEnabled = true
         chart?.holeRadius = 85f
